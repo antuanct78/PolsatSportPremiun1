@@ -11,8 +11,8 @@
 
     <script>
         var video = document.getElementById('video-iptv');
-        // URL de tu canal, ahora es el MP4:
-        var videoSrc = 'http://vlc.shickat.me:8000/pid/b40212c43e96e97542ea00f2129212a054853a57/stream.mp4'; 
+        // Nuevo URL del canal incorporado:
+        var videoSrc = 'http://192.168.200.102:6878/ace/getstream?id=38e9ae1ee0c96d7c6187c9c4cc60ffccb565bdf7'; 
 
         if (Hls.isSupported()) {
             var hls = new Hls();
@@ -22,7 +22,7 @@
                 video.play();
             });
         } else if (video.canPlayType('application/vnd.apple.mpegurl') || video.canPlayType('video/mp4')) {
-            // Soporte nativo para Safari/iOS y otros navegadores para MP4
+            // Soporte nativo para Safari/iOS y otros navegadores
             video.src = videoSrc;
             video.addEventListener('loadedmetadata', function() {
                 video.play();
