@@ -1,32 +1,44 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Reproductor IPTV HLS/MP4</title>
+    <title>Reproductor HLS en HTML</title>
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <style>
+        video {
+            width: 100%;
+            max-width: 800px;
+            height: auto;
+        }
+    </style>
 </head>
 <body>
 
-    <video id="video-iptv" controls autoplay width="800" height="450"></video>
+    <h1>Reproductor de Video HLS/MP4</h1>
 
-    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <video id="video" controls></video>
 
     <script>
-        var video = document.getElementById('video-iptv');
-        // Nuevo URL del canal incorporado:
-        var videoSrc = 'http://192.168.200.103:6878/ace/getstream?id=38e9ae1ee0c96d7c6187c9c4cc60ffccb565bdf7'; 
+        var video = document.getElementById('video');
+        // Tu URL de streaming HLS o MP4
+        var videoUrl = 'https://antuanct78.github.io/PolsatSportPremiun1/'; 
 
-        if (Hls.isSupported()) {
+        if(Hls.isSupported()) {
+            // Manejar HLS (.m3u8)
             var hls = new Hls();
-            hls.loadSource(videoSrc);
+            hls.loadSource(videoUrl);
             hls.attachMedia(video);
-            hls.on(Hls.Events.MANIFEST_PARSED, function() {
+            hls.on(Hls.Events.MANIFEST_PARSED,function() {
                 video.play();
             });
-        } else if (video.canPlayType('application/vnd.apple.mpegurl') || video.canPlayType('video/mp4')) {
-            // Soporte nativo para Safari/iOS y otros navegadores
-            video.src = videoSrc;
-            video.addEventListener('loadedmetadata', function() {
+        } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+            // Solución para navegadores que soportan HLS nativo (ej. Safari)
+            video.src = videoUrl;
+            video.addEventListener('loadedmetadata',function() {
                 video.play();
             });
+        } else {
+            // Si no se soporta HLS, intentar como MP4 o dar un mensaje de error
+            video.src = videoUrl;
         }
     </script>
 
